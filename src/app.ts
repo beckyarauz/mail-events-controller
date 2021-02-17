@@ -25,11 +25,11 @@ export const handler = async (
   let response;
 
   try {
-    const result = await stepfunction.startExecution(params).promise();
+    await stepfunction.startExecution(params).promise();
 
     response = {
       statusCode: 200,
-      body: result,
+      body: 'success',
     };
   } catch (e) {
     console.error(e.message);

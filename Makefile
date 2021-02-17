@@ -4,7 +4,8 @@ build-env:
 	docker run -t -e AWS_REGION=${AWS_REGION} node:12 node -e 'console.log(process.env.AWS_REGION);';
 	docker run -t -e STATE_MACHINE_ARN=${STATE_MACHINE_ARN} node:12 node -e 'console.log(process.env.STATE_MACHINE_ARN);';
 
-build:
+build-image:
+	npm run compile;
 	docker build -t ${PROJECT_NAME} .;
 
 run-local:

@@ -1,8 +1,10 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
-    "target": "es2017",
+    "target": "es2015",
     "module": "commonjs",
+    "rootDir": "./src",
+    "outDir": "./build",
     "strict": true,
     "noImplicitAny": false,
     "experimentalDecorators": true,
@@ -23,5 +25,6 @@
     "importHelpers": true,
     "moduleResolution": "node"
   },
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }

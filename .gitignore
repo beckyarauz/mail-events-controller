@@ -3,6 +3,9 @@ aws
 awscli-bundle
 awscli-bundle.zip
 
+#JS Build
+build
+
 # Logs
 logs
 *.log
