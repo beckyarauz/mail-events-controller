@@ -6,7 +6,8 @@ import * as deliveredEvent from '../data/delivered.json';
 
 describe('Mail State Executer Function', async () => {
   before(() => {
-    AWSMock.mock('StepFunctions', 'startExecution', () => {
+    AWSMock.mock('StepFunctions', 'startExecution', (params) => {
+      expect(params).to.have.property('input', JSON.stringify(deliveredEvent));
       return Promise.resolve({
         "executionArn": "mock-arn",
         "startDate": 123
