@@ -1,5 +1,4 @@
 import {
-  APIGatewayProxyEvent,
   APIGatewayProxyResult,
 } from 'aws-lambda';
 
@@ -12,8 +11,26 @@ interface StateMachineParams {
   stateMachineArn: string;
 }
 
-export const handler = async (
-  event: APIGatewayProxyEvent
+interface WebhookEvent {
+  'event-data': {
+    timestamp: number;
+    event: string;
+    storage?: {
+      url: string;
+      key: string;
+    };
+    id: string;
+    message: {
+      headers: {
+        'message-id': string;
+      }
+    }
+  };
+  signature: string;
+}
+
+export const handler = async <T extends WebhookEvent>(
+  event: T
 ): Promise<APIGatewayProxyResult> => {
   event['event-data'].event = event['event-data'].event.toLowerCase();
 
@@ -28,7 +45,7 @@ export const handler = async (
     await stepfunction.startExecution(params).promise();
 
     response = {
-      statusCode: 200,
+      statusCode: 202,
       body: 'success',
     };
   } catch (e) {
