@@ -1,22 +1,16 @@
 import {
   APIGatewayProxyResult,
 } from 'aws-lambda';
-import * as AWS from 'aws-sdk';
-import { StateMachineParams, WebhookEvent } from './interfaces';
+import { WebhookEvent } from './interfaces';
+import { StepFunctionTriggerer } from './StepFunctionTriggerer';
 
 export const handler = async <T extends WebhookEvent<any>>(
   event: T
 ): Promise<APIGatewayProxyResult> => {
-  const stepFunction = new AWS.StepFunctions();
   let response: APIGatewayProxyResult;
   try {
-    event['event-data'].event = event['event-data'].event.toLowerCase();
-
-    const params: StateMachineParams = {
-      input: JSON.stringify(event),
-      stateMachineArn: process.env.STATE_MACHINE_ARN || '',
-    }
-    const result = await stepFunction.startExecution(params).promise();
+    const stepTrigger = new StepFunctionTriggerer(event);
+    const result = await stepTrigger.executeFunction();
 
     response = {
       statusCode: 202,
